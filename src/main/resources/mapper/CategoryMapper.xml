@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbgu.zmz.communityadmin.mapper.CategoryMapper">
+  <resultMap id="BaseResultMap" type="com.bbgu.zmz.communityadmin.model.Category">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="catename" jdbcType="VARCHAR" property="catename" />
+    <result column="category_create" jdbcType="BIGINT" property="categoryCreate" />
+    <result column="category_modified" jdbcType="BIGINT" property="categoryModified" />
+  </resultMap>
+</mapper>

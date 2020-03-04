@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbgu.zmz.communityadmin.mapper.UserExtMapper">
+  <resultMap id="BaseResultMap" type="com.bbgu.zmz.communityadmin.model.UserExt">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="account_id" jdbcType="BIGINT" property="accountId" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    <result column="bio" jdbcType="VARCHAR" property="bio" />
+    <result column="kiss_num" jdbcType="BIGINT" property="kissNum" />
+    <result column="user_create" jdbcType="BIGINT" property="userCreate" />
+    <result column="user_modified" jdbcType="BIGINT" property="userModified" />
+    <result column="role" jdbcType="VARCHAR" property="role" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="active_time" jdbcType="BIGINT" property="activeTime" />
+    <result column="active_code" jdbcType="VARCHAR" property="activeCode" />
+  </resultMap>
+  <select id="findUser" resultMap="BaseResultMap">
+    SELECT
+        id,
+        account_id,
+        avatar_url,
+        `name`,
+        sex,
+        email,
+        kiss_num,
+        user_create,
+        role,
+        `status`
+    FROM
+        `user`
+    <where>
+      <if test="accountId != null and accountId != ''">
+        AND account_id = #{accountId}
+      </if>
+      <if test="name != null and name != ''">
+        AND name like CONCAT('%',#{name},'%')
+      </if>
+      <if test="email != null and email != ''">
+        AND email = #{email}
+      </if>
+      <if test="sex != null">
+        AND sex = #{sex}
+      </if>
+      <if test="role != null and role != ''">
+        AND role = #{role}
+      </if>
+      <if test="status != null">
+        AND status = #{status}
+      </if>
+    </where>
+    ORDER BY
+    id ASC
+  </select>
+  <select id="findUserByAccountId" resultMap="BaseResultMap">
+    SELECT
+        *
+    FROM
+        `user`
+    WHERE
+        account_id = #{accountId}
+  </select>
+</mapper>

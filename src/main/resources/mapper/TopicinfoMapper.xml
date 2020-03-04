@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbgu.zmz.communityadmin.mapper.TopicinfoMapper">
+  <resultMap id="BaseResultMap" type="com.bbgu.zmz.communityadmin.model.Topicinfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="topic_create" jdbcType="BIGINT" property="topicCreate" />
+    <result column="topic_modified" jdbcType="BIGINT" property="topicModified" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="kind_id" jdbcType="BIGINT" property="kindId" />
+    <result column="view_count" jdbcType="INTEGER" property="viewCount" />
+    <result column="is_good" jdbcType="INTEGER" property="isGood" />
+    <result column="is_end" jdbcType="INTEGER" property="isEnd" />
+    <result column="is_top" jdbcType="INTEGER" property="isTop" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="experience" jdbcType="BIGINT" property="experience" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbgu.zmz.communityadmin.mapper.CommentExtMapper">
+  <resultMap id="BaseResultMap" type="com.bbgu.zmz.communityadmin.model.CommentExt">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="topic_id" jdbcType="BIGINT" property="topicId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="comment_create" jdbcType="BIGINT" property="commentCreate" />
+    <result column="comment_modified" jdbcType="BIGINT" property="commentModified" />
+    <result column="agree_num" jdbcType="BIGINT" property="agreeNum" />
+    <result column="is_accept" jdbcType="INTEGER" property="isAccept" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <select id="findComment" resultMap="BaseResultMap">
+    SELECT
+    c.id,
+    c.user_id,
+    c.content,
+    c.comment_create,
+    c.agree_num,
+    c.is_accept,
+    c.topic_id
+    FROM
+    comment c
+    <where>
+      <if test="userId != null and userId != ''">
+        AND c.user_id = #{userId}
+      </if>
+      <if test="content != null and content != ''">
+        AND c.content like CONCAT('%',#{content},'%')
+      </if>
+    </where>
+    ORDER BY
+    c.id ASC
+  </select>
+
+</mapper>

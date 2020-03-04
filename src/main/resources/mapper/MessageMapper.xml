@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbgu.zmz.communityadmin.mapper.MessageMapper">
+  <resultMap id="BaseResultMap" type="com.bbgu.zmz.communityadmin.model.Message">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="send_user_id" jdbcType="BIGINT" property="sendUserId" />
+    <result column="recv_user_id" jdbcType="BIGINT" property="recvUserId" />
+    <result column="topic_id" jdbcType="BIGINT" property="topicId" />
+    <result column="comment_id" jdbcType="BIGINT" property="commentId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="is_read" jdbcType="INTEGER" property="isRead" />
+    <result column="message_create" jdbcType="BIGINT" property="messageCreate" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+</mapper>

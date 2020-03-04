@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="application.properties" />
+    <context id="MysqlContext" targetRuntime="MyBatis3Simple">
+       <!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>-->
+        <!-- 指定生成 Mapper 的继承模板 -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+        </plugin>
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+<!--       <jdbcConnection driverClass="org.h2.Driver"
+                        connectionURL="jdbc:h2:~/community"
+                        userId="sa"
+                        password="123">
+            <property name="nullCatalogMeansCurrent" value="true"></property>
+        </jdbcConnection>-->
+        <!-- jdbc 连接配置 -->
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+            <property name="nullCatalogMeansCurrent" value="true"></property>
+        </jdbcConnection>
+        <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <!-- 生成实体类的包名和位置 ，targetPackage指的是包名,targetProject值得是路径位置-->
+        <!-- 对于生成的pojo所在包,pojo其实就是domain Entity-->
+        <javaModelGenerator targetPackage="com.bbgu.zmz.communityadmin.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!-- 对于生成的mapper.xml所在目录 -->
+        <sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <!-- 配置mapper对应的java映射  也可以叫dao层 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.bbgu.zmz.communityadmin.mapper"  targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+       <table tableName="user" domainObjectName="User" ></table>
+        <table tableName="category" domainObjectName="Category" ></table>
+        <table tableName="comment" domainObjectName="Comment" >
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="message" domainObjectName="Message" ></table>
+        <table tableName="topicinfo" domainObjectName="Topicinfo" >
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="kind" domainObjectName="Kind" ></table>
+        <table tableName="collect" domainObjectName="Collect" ></table>
+        <table tableName="qiandao" domainObjectName="Qiandao" ></table>
+    </context>
+</generatorConfiguration>

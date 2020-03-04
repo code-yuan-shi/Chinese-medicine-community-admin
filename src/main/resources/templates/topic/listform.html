@@ -1,0 +1,145 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>添加/编辑帖子</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+</head>
+<body>
+
+  <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="padding: 20px 30px 0 0;">
+    <input th:value="${topic?.id}" type="hidden" name="id">
+    <div class="layui-form-item">
+      <label class="layui-form-label">帖子标题</label>
+      <div class="layui-input-inline">
+        <input th:value="${topic?.title}" type="text" name="title" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">发布人</label>
+      <div class="layui-input-inline">
+        <input name="userId" type="text" disabled th:value="${topic != null ? topic?.userId:session.user?.accountId}" class="layui-input" style="cursor:not-allowed !important;">
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">板块</label>
+        <div class="layui-input-inline">
+          <select name="categoryId" lay-verify="required">
+            <option value="">请选择标签</option>
+            <option th:selected="${topic?.categoryId == category.id }" th:each="category:${#httpServletRequest.getServletContext().getAttribute('categorys')}" th:value="${category.id}">[[${category.catename}]]</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">分类</label>
+        <div class="layui-input-inline">
+          <select  name="kindId" lay-verify="required">
+            <option value="">请选择标签</option>
+            <option th:selected="${topic?.kindId == kind.id }" th:each="kind:${#httpServletRequest.getServletContext().getAttribute('kinds')}" th:value="${kind.id}">[[${kind.kindname}]]</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">内容</label>
+      <div class="layui-input-inline">
+        <textarea th:text="${topic?.content}" name="content" lay-verify="required" style="width: 400px; height: 150px;" autocomplete="off" class="layui-textarea"></textarea>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">悬赏</label>
+        <div class="layui-input-inline">
+          <select name="experience" lay-verify="required">
+            <option value="">请选择标签</option>
+            <option th:selected="${topic?.experience == 20}" value="20">20</option>
+            <option th:selected="${topic?.experience == 30}" value="30">30</option>
+            <option th:selected="${topic?.experience == 50}" value="50">50</option>
+            <option th:selected="${topic?.experience == 60}" value="60">60</option>
+            <option th:selected="${topic?.experience == 80}" value="80">80</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">精帖</label>
+      <div class="layui-input-inline">
+        <input th:checked="${topic?.isGood == 1?true:false}" type="checkbox" lay-verify="required" lay-filter="isGood" name="isGood" lay-skin="switch" lay-text="是|否">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">置顶</label>
+      <div class="layui-input-inline">
+        <input th:checked="${topic?.isTop == 1?true:false}" type="checkbox" lay-verify="required" lay-filter="isTop" name="isTop" lay-skin="switch" lay-text="是|否">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">已结</label>
+      <div class="layui-input-inline">
+        <input th:checked="${topic?.isEnd == 1?true:false}" type="checkbox" lay-verify="required" lay-filter="isEnd" name="isEnd" lay-skin="switch" lay-text="是|否">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">状态</label>
+      <div class="layui-input-inline">
+        <input th:checked="${topic?.status == 1?true:false}" type="checkbox" lay-verify="required" lay-filter="status" name="status" lay-skin="switch" lay-text="已审核|未审核">
+      </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+      <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" id="layuiadmin-app-form-submit" value="确认添加">
+      <input type="button" lay-submit lay-filter="layuiadmin-app-form-edit" id="layuiadmin-app-form-edit" value="确认编辑">
+    </div>
+  </div>
+
+  <script src="/static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '/static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form','admin'], function(){
+    var $ = layui.$
+    ,form = layui.form
+     ,admin = layui.admin;
+    
+    //监听提交
+    form.on('submit(layuiadmin-app-form-submit)', function(data){
+      var field = data.field; //获取提交的字段
+      var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引  
+
+      //提交 Ajax 成功后，关闭当前弹层并重载表格
+      admin.req({
+        url: '/topic/addtopic'
+        ,data:field
+        ,success: function(res){
+          if(res.code == 0){
+            layer.msg(res.msg,{icon:1,time:2000},function () {
+              parent.layer.close(index); //再执行关闭
+              parent.layui.table.reload('LAY-app-content-list'); //重载表格
+            })
+          }else {
+            layer.msg(res.msg,{icon:2,time:2000})
+          }
+        }
+      });
+
+    });
+  })
+  </script>
+</body>
+</html>

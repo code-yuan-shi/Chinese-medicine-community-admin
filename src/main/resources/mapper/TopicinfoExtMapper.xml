@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbgu.zmz.communityadmin.mapper.TopicinfoExtMapper">
+  <resultMap id="BaseResultMap" type="com.bbgu.zmz.communityadmin.model.TopicinfoExt">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="topic_create" jdbcType="BIGINT" property="topicCreate" />
+    <result column="topic_modified" jdbcType="BIGINT" property="topicModified" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="kind_id" jdbcType="BIGINT" property="kindId" />
+    <result column="view_count" jdbcType="INTEGER" property="viewCount" />
+    <result column="is_good" jdbcType="INTEGER" property="isGood" />
+    <result column="is_end" jdbcType="INTEGER" property="isEnd" />
+    <result column="is_top" jdbcType="INTEGER" property="isTop" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="experience" jdbcType="BIGINT" property="experience" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="catename" jdbcType="VARCHAR" property="catename" />
+    <result column="kindname" jdbcType="VARCHAR" property="kindname" />
+  </resultMap>
+  <select id="findAllTopic" resultMap="BaseResultMap">
+        SELECT
+            t.id,
+            t.title,
+            t.user_id,
+            c.catename,
+            k.kindname,
+            t.topic_create,
+            t.is_good,
+            t.is_top,
+            t.is_end,
+            t.`status`,
+            t.experience
+        FROM
+            topicinfo t
+        LEFT JOIN `user` u ON u.account_id = t.user_id
+        LEFT JOIN category c ON c.id = t.category_id
+        LEFT JOIN kind k ON k.id = t.kind_id
+        <where>
+            <if test="title != null and title != ''">
+                AND t.title like CONCAT('%',#{title},'%')
+            </if>
+            <if test="userId != null and userId != ''">
+                AND t.user_id = #{userId}
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                AND t.category_id = #{categoryId}
+            </if>
+            <if test="kindId != null and kindId != ''">
+                AND t.kind_id = #{kindId}
+            </if>
+        </where>
+        ORDER BY
+            t.id ASC
+  </select>
+</mapper>

@@ -1,0 +1,66 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>板块管理</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="/static/style/admin.css" media="all">
+
+</head>
+<body>
+
+  <div class="layui-form" lay-filter="layuiadmin-form-category" id="layuiadmin-app-form-category" style="padding-top: 30px; text-align: center;">
+    <input type="hidden" name="id" th:value="${cate?.id}">
+    <div class="layui-form-item">
+      <label class="layui-form-label">板块名称</label>
+      <div class="layui-input-inline">
+        <input th:value="${cate?.catename}" type="text" name="catename" lay-verify="required" placeholder="请输入..." autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+      <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" id="layuiadmin-app-form-submit" value="确认添加">
+      <input type="button" lay-submit lay-filter="layuiadmin-app-form-edit" id="layuiadmin-app-form-edit" value="确认编辑">
+    </div>
+  </div>
+
+  <script src="/static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '/static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form','admin'], function(){
+    var $ = layui.$ 
+    ,form = layui.form
+    ,admin = layui.admin ;
+    //监听提交
+    form.on('submit(layuiadmin-app-form-submit)', function(data){
+      var field = data.field; //获取提交的字段
+      var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+
+      //提交 Ajax 成功后，关闭当前弹层并重载表格
+      admin.req({
+        url: '/topic/addcategory'
+        ,data:field
+        ,success: function(res){
+          if(res.code == 0){
+            layer.msg(res.msg,{icon:1,time:2000},function () {
+              parent.layer.close(index); //再执行关闭
+              parent.layui.table.reload('LAY-app-content-category'); //重载表格
+            })
+          }else {
+            layer.msg(res.msg,{icon:2,time:2000})
+          }
+        }
+      });
+
+    });
+  })
+  </script>
+</body>
+</html>
