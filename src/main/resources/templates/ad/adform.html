@@ -1,0 +1,142 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>layuiAdmin 网站用户 iframe 框</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+</head>
+<body>
+
+  <div class="layui-form" lay-filter="layuiadmin-form-ad" id="layuiadmin-form-ad" style="padding: 20px 0 0 0;">
+    <input type="hidden" th:value="${ad?.id}" name="id">
+    <div class="layui-form-item">
+      <label class="layui-form-label">广告名称</label>
+      <div class="layui-input-inline">
+        <input  th:value="${ad?.title}" type="text" name="title" lay-verify="required" placeholder="请输入广告名称" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">广告链接</label>
+      <div class="layui-input-inline">
+        <input  th:value="${ad?.url}" type="text" name="url" lay-verify="required" placeholder="请输入广告链接" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">广告图片</label>
+      <div class="layui-input-inline">
+        <input type="text" th:value="${ad?.image}" name="image" lay-verify="required" placeholder="请上传图片" autocomplete="off" class="layui-input" >
+      </div>
+      <button style="float: left;" type="button" class="layui-btn" id="layuiadmin-upload-ad">上传图片</button>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">开始时间</label>
+      <div class="layui-inline">
+        <input id="start" type="text" name="start" class="layui-input test-item" placeholder="请选择开始时间">
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">结束时间</label>
+      <div class="layui-inline">
+        <input id="end" type="text" name="end" class="layui-input test-item" placeholder="请选择结束时间">
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">是否展示</label>
+      <div class="layui-input-inline">
+        <input th:checked="${ad?.status == 1?true:false}" type="checkbox" lay-verify="required" lay-filter="status" name="zhuangtai" lay-skin="switch" lay-text="是|否">
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">展示位置</label>
+        <div class="layui-input-inline">
+          <select name="pos" lay-verify="required">
+            <option value="">请选择标签</option>
+            <option th:each="positions:${position}" th:selected="${ad?.pos == positions.pos}"  th:value="${positions.pos}">[[${positions.message}]]</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-form-item layui-hide">
+      <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" id="layuiadmin-app-form-submit" value="确认添加">
+      <input type="button" lay-submit lay-filter="layuiadmin-app-form-edit" id="layuiadmin-app-form-edit" value="确认编辑">
+    </div>
+  </div>
+
+  <script src="/static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '/static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'upload','laydate'], function(){
+    var $ = layui.$
+    ,form = layui.form
+    ,upload = layui.upload
+    ,laydate = layui.laydate
+    ;
+
+    laydate.render({
+        elem:'#start'
+      ,type: 'datetime'
+      ,trigger: 'click'
+        ,value:new Date([[${ad?.adStart}]])
+      });
+
+    laydate.render({
+      elem: '#end'
+      ,trigger: 'click'
+      ,type: 'datetime'
+      ,value:new Date([[${ad?.adEnd}]])
+    });
+    
+    upload.render({
+      elem: '#layuiadmin-upload-ad'
+      ,url: '/api/uploadAd'
+      ,accept: 'images'
+      ,method: 'post'
+      ,acceptMime: 'image/*'
+      ,done: function(res){
+        if(res.code == 0){
+          $(this.item).prev("div").children("input").val(res.data.url);
+          layer.msg(res.msg,{icon:1,time:1000});
+        }
+      }
+    });
+
+    form.on('submit(layuiadmin-app-form-submit)', function(data){
+      var field = data.field; //获取提交的字段
+      var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+      //提交 Ajax 成功后，关闭当前弹层并重载表格
+      $.ajax({
+        type:'post'
+        ,url: '/ad/addad'
+        ,data:field
+        ,success: function(res){
+          if(res.code == 0){
+            layer.msg(res.msg,{icon:1,time:2000},function () {
+              parent.layer.close(index); //再执行关闭
+              parent.layui.table.reload('LAY-app-content-ad'); //数据刷新
+            })
+          }else {
+            layer.msg(res.msg,{icon:2,time:2000})
+          }
+        }
+      });
+
+    });
+
+  })
+  </script>
+</body>
+</html>

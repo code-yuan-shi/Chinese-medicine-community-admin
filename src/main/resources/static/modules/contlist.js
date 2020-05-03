@@ -21,8 +21,8 @@ layui.define(['table', 'form','admin'], function(exports){
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field: 'id', width: 60, title: 'ID', sort: true}
-      ,{field: 'title',title:'标题',minWidth: 200,templet: '<div><a href="http://101.200.47.40/jie/detail/{{d.id}}" target="_blank" class="layui-table-link">{{d.title}}</a></div>'}
-      ,{field: 'userId', title: '作者',templet: '<div><a href="http://101.200.47.40/user/home/{{d.userId}}" target="_blank" class="layui-table-link">{{d.userId}}</a></div>',minWidth: 130}
+      ,{field: 'title',title:'标题',minWidth: 200,templet: '<div><a href="http://101.200.47.40:8000/jie/detail/{{d.id}}" target="_blank" class="layui-table-link">{{d.title}}</a></div>'}
+      ,{field: 'userId', title: '作者',templet: '<div><a href="http://101.200.47.40:8000/user/home/{{d.userId}}" target="_blank" class="layui-table-link">{{d.userId}}</a></div>',minWidth: 130}
       ,{field: 'catename', title: '板块', minWidth: 130}
       ,{field: 'kindname',title: '分类', minWidth: 60}
       ,{field: 'experience',title: '悬赏', minWidth: 50}
@@ -264,6 +264,153 @@ layui.define(['table', 'form','admin'], function(exports){
       });
     }
   });
+
+  //广告管理
+  table.render({
+    elem: '#LAY-app-content-ad'
+    ,url:'/ad/getad' //模拟接口
+    ,cols: [[
+      {field: 'id', width: 50, title: 'ID'}
+      ,{field: 'title', title: '广告标题', minWidth: 100}
+      ,{field: 'url', title: '广告链接', minWidth: 100}
+      ,{field: 'image', title: '广告图片', width: 125,templet: '#imgTpl'}
+      ,{field: 'adStart', title: '开始时间', templet: '<div>{{layui.util.toDateString(d.adStart)}}</div>',sort: true}
+      ,{field: 'adEnd', title: '结束时间', templet: '<div>{{layui.util.toDateString(d.adEnd)}}</div>',sort: true}
+      ,{field: 'status', width: 100,title: '是否展示', templet: '#status'}
+      ,{field: 'pos', title: '展示位置', minWidth: 100}
+      ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#layuiadmin-app-cont-adbar'}
+    ]]
+    ,text: '对不起，加载出现异常！'
+  });
+
+  //监听工具条
+  table.on('tool(LAY-app-content-ad)', function(obj){
+    var data = obj.data;
+    if(obj.event === 'del'){
+      layer.confirm('确定删除此广告？', function(index){
+        admin.req({
+          url: '/ad/delad'
+          ,data: {
+            id:data.id
+          }
+          ,success: function(res){
+            if(res.code == 0){
+              layer.msg(res.msg,{icon:1,time:1000},function () {
+                obj.del();
+                layer.close(index);
+              });
+            }
+          }
+        });
+      });
+    } else if(obj.event === 'edit'){
+      var tr = $(obj.tr);
+      layer.open({
+        type: 2
+        ,title: '编辑广告'
+        ,content: '/ad/adform?id='+ data.id
+        ,area: ['460px', '510px']
+        ,btn: ['确定', '取消']
+        ,yes: function(index, layero){
+          //获取iframe元素的值
+          var iframeWindow = window['layui-layer-iframe'+ index]
+              ,submit = layero.find('iframe').contents().find("#layuiadmin-app-form-edit");
+
+          iframeWindow.layui.form.on('submit(layuiadmin-app-form-edit)', function(data){
+            var field = data.field;
+            admin.req({
+              type:'post'
+              ,url: '/ad/updatead'
+              ,data:field
+              ,success: function(res){
+                if(res.code == 0){
+                  layer.msg(res.msg,{icon:1,time:1000},function () {
+                    table.reload('LAY-app-content-ad'); //数据刷新
+                    layer.close(index);
+                  });
+                }
+              }
+            })
+
+          });
+          submit.trigger('click');
+          submit.addClass("layui-btn-disabled");
+          submit.attr('disabled', 'disabled');
+        }
+      });
+    }
+  });
+
+  //签到管理
+  table.render({
+    elem: '#LAY-app-content-sign'
+    ,url:'/sign/getsign' //模拟接口
+    ,cols: [[
+      {field: 'id', width: 50, title: 'ID'}
+      ,{field: 'userId', title: '用户ID', minWidth: 100}
+      ,{field: 'total', title: '总签到天数', minWidth: 100,sort: true}
+      ,{field: 'qiandaoCreate', title: '最近签到时间', templet: '<div>{{layui.util.toDateString(d.qiandaoCreate)}}</div>',sort: true}
+      ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#layuiadmin-app-cont-signbar'}
+    ]]
+  });
+
+  //监听工具条
+  table.on('tool(LAY-app-content-sign)', function(obj){
+    var data = obj.data;
+    if(obj.event === 'del'){
+      layer.confirm('确定删除用户签到信息？', function(index){
+        admin.req({
+          url: '/sign/delsign'
+          ,data: {
+            id:data.id
+          }
+          ,success: function(res){
+            if(res.code == 0){
+              layer.msg(res.msg,{icon:1,time:1000},function () {
+                obj.del();
+                layer.close(index);
+              });
+            }
+          }
+        });
+      });
+    } else if(obj.event === 'edit'){
+      var tr = $(obj.tr);
+      layer.open({
+        type: 2
+        ,title: '编辑签到信息'
+        ,content: '/sign/signform?id='+ data.id
+        ,area: ['460px', '500px']
+        ,btn: ['确定', '取消']
+        ,yes: function(index, layero){
+          //获取iframe元素的值
+          var iframeWindow = window['layui-layer-iframe'+ index]
+              ,submit = layero.find('iframe').contents().find("#layuiadmin-app-form-edit");
+
+          iframeWindow.layui.form.on('submit(layuiadmin-app-form-edit)', function(data){
+            var field = data.field;
+            admin.req({
+              type:'post'
+              ,url: '/sign/updatesign'
+              ,data:field
+              ,success: function(res){
+                if(res.code == 0){
+                  layer.msg(res.msg,{icon:1,time:1000},function () {
+                    table.reload('LAY-app-content-sign'); //数据刷新
+                    layer.close(index);
+                  });
+                }
+              }
+            })
+
+          });
+          submit.trigger('click');
+          submit.addClass("layui-btn-disabled");
+          submit.attr('disabled', 'disabled');
+        }
+      });
+    }
+  });
   //评论管理
   table.render({
     elem: '#LAY-app-content-comm'
@@ -271,8 +418,8 @@ layui.define(['table', 'form','admin'], function(exports){
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field: 'id', width: 60, title: 'ID', sort: true}
-      ,{field: 'userId', title: '评论者', width: 150,templet: '<div><a href="http://101.200.47.40/user/home/{{d.userId}}" target="_blank" class="layui-table-link">{{d.userId}}</a></div>'}
-      ,{field: 'content', title: '评论内容', minWidth: 100,templet: '<div><a href="http://101.200.47.40/jie/detail/{{d.topicId}}?size=1000#{{d.id}}" target="_blank" class="layui-table-link">{{d.content}}</a></div>'}
+      ,{field: 'userId', title: '评论者', width: 150,templet: '<div><a href="http://101.200.47.40:8000/user/home/{{d.userId}}" target="_blank" class="layui-table-link">{{d.userId}}</a></div>'}
+      ,{field: 'content', title: '评论内容', minWidth: 100,templet: '<div><a href="http://101.200.47.40:8000/jie/detail/{{d.topicId}}?size=1000#{{d.id}}" target="_blank" class="layui-table-link">{{d.content}}</a></div>'}
       ,{field: 'commentCreate', title: '评论时间', width: 180,templet: '<div>{{layui.util.toDateString(d.commentCreate)}}</div>', sort: true}
       ,{field: 'agreeNum',align: 'center', title: '点赞数', width: 80}
       ,{field: 'isAccept', title: '采纳', width: 60,templet:'#accept'}

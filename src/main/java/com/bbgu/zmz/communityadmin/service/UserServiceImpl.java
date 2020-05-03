@@ -25,11 +25,17 @@ public class UserServiceImpl  implements UserService{
     private UserMapper userMapper;
 
 
+    /*
+    查询用户信息
+     */
     @Override
     public List<User> findAllUser(Long accountId,String name,String email,Integer sex,String role,Integer status) {
         return userExtMapper.findUser(accountId, name, email, sex, role, status);
     }
 
+    /*
+    添加用户信息
+     */
     @Override
     public Result insertUser(User user) {
         Example example = new Example(User.class);
@@ -113,7 +119,7 @@ public class UserServiceImpl  implements UserService{
         example.createCriteria().andEqualTo("accountId",user.getAccountId()).andEqualTo("pwd",pwd);
         List<User> userList = userMapper.selectByExample(example);
         if(userList.size() != 0){
-            if(userList.get(0).getRole().equals("管理员")){
+            if(userList.get(0).getRole().equals("系统管理员") || userList.get(0).getRole().equals("社区管理员")){
                 User user1 = new User();
                 user1.setId(userList.get(0).getId());
                 user1.setUserModified(System.currentTimeMillis());

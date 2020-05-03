@@ -20,7 +20,7 @@
           <div class="layui-inline">
             <label class="layui-form-label">用户账号</label>
             <div class="layui-input-block">
-              <input type="text" name="name" placeholder="请输入" autocomplete="off" class="layui-input">
+              <input type="text" name="accountId" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
           </div>
           <div class="layui-inline">
@@ -52,6 +52,7 @@
                 <option value="">不限</option>
                 <option value="社区用户">社区用户</option>
                 <option value="社区管理员">社区管理员</option>
+                <option value="系统管理员">系统管理员</option>
                 <option value="违规用户">违规用户</option>
               </select>
             </div>
@@ -191,6 +192,10 @@
     $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
       var type = $(this).data('type');
       active[type] ? active[type].call(this) : '';
+    });
+
+    $("body").on("click",".layui-table-cell img",function(e){
+      layer.photos({ photos: {"data": [{"src": e.target.src}]},anim:5});
     });
   });
   </script>

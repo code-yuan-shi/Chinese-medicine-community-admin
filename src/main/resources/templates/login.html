@@ -75,15 +75,17 @@
           if(res.code == 0){
             //登入成功的提示与跳转
             layer.msg(res.msg, {
-              icon: 1
-              ,time: 1000
+              offset: '15px'
+              ,icon: 1
+              ,time: 2000
             }, function(){
               location.href = res.data.action;
             });
           }else{
             layer.msg(res.msg, {
-              icon: 2
-              ,time: 1000
+              offset: '15px'
+              ,icon: 2
+              ,time: 2000
             })
           }
         }

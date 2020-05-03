@@ -37,7 +37,7 @@
       <label class="layui-form-label">选择性别</label>
       <div class="layui-input-block">
         <input th:checked="${userinfo?.sex == 1?true:false}" type="radio" name="sex" value="1" title="男">
-        <input th:checked="${userinfo?.sex == 0?true:false}" type="radio" name="sex" value="0" title="女">
+        <input th:checked="${userinfo?.sex == 1?false:true}" type="radio" name="sex" value="0" title="女">
       </div>
     </div>
 
@@ -60,11 +60,12 @@
       <div class="layui-inline">
         <label class="layui-form-label">用户角色</label>
         <div class="layui-input-inline">
-          <select name="role" lay-verify="required">
+          <select name="role" lay-verify="required" th:disabled="${userinfo?.role == '系统管理员'}">
             <option value="">请选择</option>
             <option th:selected="${userinfo?.role == '社区用户'}" value="社区用户">社区用户</option>
             <option th:selected="${userinfo?.role == '社区管理员'}" value="社区管理员">社区管理员</option>
             <option th:selected="${userinfo?.role == '违规用户'}" value="违规用户">违规用户</option>
+            <option th:selected="${userinfo?.role == '系统管理员'}" value="系统管理员">系统管理员</option>
           </select>
         </div>
       </div>

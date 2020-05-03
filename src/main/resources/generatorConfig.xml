@@ -60,5 +60,6 @@
         <table tableName="kind" domainObjectName="Kind" ></table>
         <table tableName="collect" domainObjectName="Collect" ></table>
         <table tableName="qiandao" domainObjectName="Qiandao" ></table>
+        <table tableName="ad" domainObjectName="Ad" ></table>
     </context>
 </generatorConfiguration>

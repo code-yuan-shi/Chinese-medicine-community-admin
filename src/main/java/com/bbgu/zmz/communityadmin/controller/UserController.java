@@ -27,6 +27,9 @@ public class UserController {
         return "/user/user/list";
 
     }
+    /*
+    获取用户数据
+     */
     @GetMapping("/getuserlist")
     @ResponseBody
     public Result getUserList(Integer page,
@@ -52,6 +55,9 @@ public class UserController {
         return "/user/user/userform";
     }
 
+    /*
+    添加用户信息
+     */
     @PostMapping("/adduser")
     @ResponseBody
     public Result addUser(User user, @RequestParam(value = "zhuangtai",required = false)String zhuangtai){

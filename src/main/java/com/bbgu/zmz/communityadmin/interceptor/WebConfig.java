@@ -22,7 +22,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/static/**",
                         "/",
+                        "/ad/test",
                         "/dologin",
+                        "/logout",
                         "/api/check"
                         );
     }

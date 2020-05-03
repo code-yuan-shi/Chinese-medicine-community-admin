@@ -23,7 +23,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("api")
+@RequestMapping("/api")
 public class ApiController {
     private static final long serialVersionUID = 1L;
     private static int WIDTH = 85; //验证码图片宽度
@@ -53,6 +53,36 @@ public class ApiController {
             file.transferTo(file2);
             Map map = new HashMap();
             map.put("url","/upload/" + uuid + file.getOriginalFilename());
+            return new Result().ok(MsgEnum.UPLOAD_SUCCESS,map);
+        } else {
+            return new Result().error(MsgEnum.UPLOAD_FAILE);
+        }
+    }
+
+    /*
+   广告图片上传接口
+    */
+    @PostMapping("/uploadAd")
+    @ResponseBody
+    public Result uploadAd(@RequestParam MultipartFile file) throws IOException {
+        if (file.getSize() > 0) {
+            Properties props=System.getProperties(); //获得系统属性集
+            String osName = props.getProperty("os.name"); //操作系统名称
+            String realPath = "";
+            if(osName.indexOf("Win") != -1){
+                realPath = new String("D://ad/");
+            }else{
+                realPath = new String("/data/wwwroot/ad");
+            }
+            File file1 = new File(realPath);
+            if (!file1.exists()) {
+                file1.mkdirs();
+            }
+            UUID uuid = UUID.randomUUID();
+            File file2 = new File(realPath + File.separator +uuid+ file.getOriginalFilename());
+            file.transferTo(file2);
+            Map map = new HashMap();
+            map.put("url","/ad/" + uuid+file.getOriginalFilename());
             return new Result().ok(MsgEnum.UPLOAD_SUCCESS,map);
         } else {
             return new Result().error(MsgEnum.UPLOAD_FAILE);

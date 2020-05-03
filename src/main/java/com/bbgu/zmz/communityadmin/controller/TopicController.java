@@ -152,13 +152,15 @@ public class TopicController {
         return "/topic/comment";
 
     }
+    /*
+    获取评论列表数据
+     */
     @GetMapping("/getComment")
     @ResponseBody
     public Result getComment(@RequestParam("page") Integer page,
                              @RequestParam("limit") Integer limit,
                              @RequestParam(value = "userId",required = false) Long userId,
                              @RequestParam(value = "content",required = false) String content){
-
         return topicService.findComment(page, limit, userId, content);
 
     }
@@ -214,6 +216,7 @@ public class TopicController {
         return "/topic/categoryform";
 
     }
+
     /*
     获取板块列表
      */
@@ -225,6 +228,7 @@ public class TopicController {
         result.setData(categories);
         return  result;
     }
+
     /*
     更新板块信息
      */
@@ -267,6 +271,9 @@ public class TopicController {
         return "/topic/kindform";
 
     }
+    /*
+    获取分类信息数据
+     */
     @GetMapping("/getkind")
     @ResponseBody
     public Result getkind(){
@@ -275,6 +282,8 @@ public class TopicController {
         result.setData(kindList);
         return  result;
     }
+
+
     @PostMapping("/updatekind")
     @ResponseBody
     public Result updatekind(Kind kind){

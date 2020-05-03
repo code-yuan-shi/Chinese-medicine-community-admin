@@ -29,9 +29,13 @@ public class TopicServiceImpl implements TopicService {
     @Autowired
     private MessageMapper messageMapper;
 
+    /*
+    查询帖子信息
+     */
     @Override
     public Result findAllTopic(Integer page,Integer limit,String title, Long userId, Long categoryId, Long kindId) {
         Result result = new Result();
+        //数据分页处理
         PageHelper.startPage(page, limit);
         List<TopicinfoExt> topicinfoExtList = topicinfoExtMapper.findAllTopic(title,userId,categoryId,kindId);
         PageInfo<?> pageList = new PageInfo<>(topicinfoExtList);
@@ -70,7 +74,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public int updateTopic(Topicinfo topicinfo) {
-        return topicinfoMapper.updateByPrimaryKey(topicinfo);
+        return topicinfoMapper.updateByPrimaryKeySelective(topicinfo);
     }
 
     @Override
@@ -78,11 +82,17 @@ public class TopicServiceImpl implements TopicService {
         return topicinfoMapper.selectByPrimaryKey(id);
     }
 
+    /*
+    查询板块信息
+     */
     @Override
     public List<Category> findAllCate() {
         return categoryMapper.selectAll();
     }
 
+    /*
+    查询分类信息
+     */
     @Override
     public List<Kind> findAllKind() {
         return kindMapper.selectAll();
@@ -130,6 +140,9 @@ public class TopicServiceImpl implements TopicService {
         return kindMapper.insertSelective(kind);
     }
 
+    /*
+    查询评论信息
+     */
     @Override
     public Result findComment(Integer page, Integer limit, Long userId, String content) {
         Result result = new Result();

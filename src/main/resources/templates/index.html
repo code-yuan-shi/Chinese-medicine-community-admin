@@ -74,9 +74,15 @@
                 <dd>
                   <a lay-href="/topic/kind">分类管理</a>
                 </dd>
+                <dd>
+                  <a lay-href="/sign/signList">签到管理</a>
+                </dd>
+                <dd>
+                  <a lay-href="/ad/adList">广告管理</a>
+                </dd>
               </dl>
             </li>
-            <li data-name="user" class="layui-nav-item">
+            <li data-name="user" class="layui-nav-item" th:if="${session.user.role == '系统管理员'}">
               <a href="javascript:;" lay-tips="用户" lay-direction="2">
                 <i class="layui-icon layui-icon-user"></i>
                 <cite>用户管理</cite>

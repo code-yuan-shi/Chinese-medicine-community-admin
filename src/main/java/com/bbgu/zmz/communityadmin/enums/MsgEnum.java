@@ -19,8 +19,7 @@ public enum MsgEnum {
     CODE_INCORRECT(1,"验证码错误！"),
     PWD_ATYPISM(1,"两次输入密码不一致"),
     USER_PWD_INCORRECT(1,"用户名或者密码错误！"),
-    LOGIN_SUCCESS(0,"登录成功"),
-
+    LOGIN_SUCCESS(0,"登录成功")
     ;
     private int code;
     private String message;
@@ -45,4 +44,5 @@ public enum MsgEnum {
     public void setMessage(String message) {
         this.message = message;
     }
+
 }
