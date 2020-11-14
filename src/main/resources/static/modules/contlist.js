@@ -4,7 +4,7 @@
  @Author：star1029
  @Site：http://www.layui.com/admin/
  @License：LPPL
-    
+
  */
 
 
@@ -21,8 +21,8 @@ layui.define(['table', 'form','admin'], function(exports){
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field: 'id', width: 60, title: 'ID', sort: true}
-      ,{field: 'title',title:'标题',minWidth: 200,templet: '<div><a href="http://101.200.47.40:8000/jie/detail/{{d.id}}" target="_blank" class="layui-table-link">{{d.title}}</a></div>'}
-      ,{field: 'userId', title: '作者',templet: '<div><a href="http://101.200.47.40:8000/user/home/{{d.userId}}" target="_blank" class="layui-table-link">{{d.userId}}</a></div>',minWidth: 130}
+      ,{field: 'title',title:'标题',minWidth: 200,templet: '<div><a href="http://localhost:8080/jie/detail/{{d.id}}" target="_blank" class="layui-table-link">{{d.title}}</a></div>'}
+      ,{field: 'userId', title: '作者',templet: '<div><a href="http://localhost:8080/user/home/{{d.userId}}" target="_blank" class="layui-table-link">{{d.userId}}</a></div>',minWidth: 130}
       ,{field: 'catename', title: '板块', minWidth: 130}
       ,{field: 'kindname',title: '分类', minWidth: 60}
       ,{field: 'experience',title: '悬赏', minWidth: 50}
@@ -37,7 +37,7 @@ layui.define(['table', 'form','admin'], function(exports){
     ,limit: 10
     ,limits: [10, 15, 20, 25, 30]
   });
-  
+
   //监听工具条
   table.on('tool(LAY-app-content-list)', function(obj){
     var data = obj.data;
@@ -73,7 +73,7 @@ layui.define(['table', 'form','admin'], function(exports){
           //监听提交
           iframeWindow.layui.form.on('submit(layuiadmin-app-form-edit)', function(data){
             var field = data.field; //获取提交的字段
-            
+
             //提交 Ajax 成功后，静态更新表格中的数据
             admin.req({
               type:'post'
@@ -101,8 +101,8 @@ layui.define(['table', 'form','admin'], function(exports){
                 }
               }
             });
-          });  
-          
+          });
+
           submit.trigger('click');
           submit.addClass("layui-btn-disabled");
           submit.attr('disabled', 'disabled');
@@ -123,7 +123,7 @@ layui.define(['table', 'form','admin'], function(exports){
       ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#layuiadmin-app-cont-categorybar'}
     ]]
   });
-  
+
   //监听工具条
   table.on('tool(LAY-app-content-category)', function(obj){
     var data = obj.data;
@@ -418,8 +418,8 @@ layui.define(['table', 'form','admin'], function(exports){
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field: 'id', width: 60, title: 'ID', sort: true}
-      ,{field: 'userId', title: '评论者', width: 150,templet: '<div><a href="http://101.200.47.40:8000/user/home/{{d.userId}}" target="_blank" class="layui-table-link">{{d.userId}}</a></div>'}
-      ,{field: 'content', title: '评论内容', minWidth: 100,templet: '<div><a href="http://101.200.47.40:8000/jie/detail/{{d.topicId}}?size=1000#{{d.id}}" target="_blank" class="layui-table-link">{{d.content}}</a></div>'}
+      ,{field: 'userId', title: '评论者', width: 150,templet: '<div><a href="http://localhost:8080/user/home/{{d.userId}}" target="_blank" class="layui-table-link">{{d.userId}}</a></div>'}
+      ,{field: 'content', title: '评论内容', minWidth: 100,templet: '<div><a href="http://localhost:8080/jie/detail/{{d.topicId}}?size=1000#{{d.id}}" target="_blank" class="layui-table-link">{{d.content}}</a></div>'}
       ,{field: 'commentCreate', title: '评论时间', width: 180,templet: '<div>{{layui.util.toDateString(d.commentCreate)}}</div>', sort: true}
       ,{field: 'agreeNum',align: 'center', title: '点赞数', width: 80}
       ,{field: 'isAccept', title: '采纳', width: 60,templet:'#accept'}
@@ -430,7 +430,7 @@ layui.define(['table', 'form','admin'], function(exports){
     ,limits: [10, 15, 20, 25, 30]
     ,text: '对不起，加载出现异常！'
   });
-  
+
   //监听工具条
   table.on('tool(LAY-app-content-comm)', function(obj){
     var data = obj.data;
@@ -489,7 +489,7 @@ layui.define(['table', 'form','admin'], function(exports){
           submit.attr('disabled', 'disabled');
         }
         ,success: function(layero, index){
-          
+
         }
       });
     }

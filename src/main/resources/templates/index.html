@@ -68,16 +68,16 @@
                 <dd>
                     <a lay-href="/topic/comment">评论管理</a>
                 </dd>
-                <dd>
+                <dd th:if="${session.user.role == '系统管理员'}">
                   <a lay-href="/topic/category">板块管理</a>
                 </dd>
-                <dd>
+                <dd th:if="${session.user.role == '系统管理员'}">
                   <a lay-href="/topic/kind">分类管理</a>
                 </dd>
-                <dd>
+                <dd th:if="${session.user.role == '系统管理员'}">
                   <a lay-href="/sign/signList">签到管理</a>
                 </dd>
-                <dd>
+                <dd th:if="${session.user.role == '系统管理员'}">
                   <a lay-href="/ad/adList">广告管理</a>
                 </dd>
               </dl>

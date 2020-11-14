@@ -81,7 +81,7 @@ public class AdController {
      */
     @PostMapping("/addad")
     @ResponseBody
-    public Result addUser(Ad ad,String start,String end, @RequestParam(value = "zhuangtai",required = false)String zhuangtai) throws Exception {
+    public Result addAd(Ad ad,String start,String end, @RequestParam(value = "zhuangtai",required = false)String zhuangtai) throws Exception {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date adstart =  simpleDateFormat.parse(start);
         Date adend =  simpleDateFormat.parse(end);
@@ -103,7 +103,7 @@ public class AdController {
      */
     @PostMapping("updatead")
     @ResponseBody
-    public Result updateUser(Ad ad, String start,String end, String zhuangtai) throws Exception {
+    public Result updateAd(Ad ad, String start,String end, String zhuangtai) throws Exception {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date adstart =  simpleDateFormat.parse(start);
         Date adend =  simpleDateFormat.parse(end);

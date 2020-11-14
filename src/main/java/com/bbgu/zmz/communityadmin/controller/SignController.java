@@ -40,6 +40,8 @@ public class SignController {
         result.setData(SignList);
         return  result;
     }
+
+
     /*
     删除签到记录
      */

@@ -4,7 +4,7 @@
  @Author：star1029
  @Site：http://www.layui.com/admin/
  @License：LPPL
-    
+
  */
 
 
@@ -20,7 +20,7 @@ layui.define(['table', 'form'], function(exports){
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field: 'id', width: 100, title: 'ID', sort: true}
-      ,{field: 'accountId', title: '用户账号', width: 120,templet: '<div><a href="http://101.200.47.40/user/home/{{d.accountId}}" target="_blank" class="layui-table-link">{{d.accountId}}</a></div>'}
+      ,{field: 'accountId', title: '用户账号', width: 120,templet: '<div><a href="http://localhost:8080/user/home/{{d.accountId}}" target="_blank" class="layui-table-link">{{d.accountId}}</a></div>'}
       ,{field: 'avatarUrl', title: '头像', width: 90,align:'center', templet: '#imgTpl'}
       ,{field: 'name', title: '昵称', minWidth: 180}
       ,{field: 'sex', width: 60, title: '性别',templet: '#sex',align:'center'}
@@ -34,7 +34,7 @@ layui.define(['table', 'form'], function(exports){
     ,page: true
     ,limit: 10
   });
-  
+
   //监听工具条
   table.on('tool(LAY-user-manage)', function(obj){
     var data = obj.data;
@@ -65,7 +65,7 @@ layui.define(['table', 'form'], function(exports){
           return layer.msg("密码错误！");
         }
 
-        
+
 
       });
     } else if(obj.event === 'edit'){
@@ -86,7 +86,7 @@ layui.define(['table', 'form'], function(exports){
           //监听提交
           iframeWindow.layui.form.on('submit('+ submitID +')', function(data){
             var field = data.field; //获取提交的字段
-            
+
             //提交 Ajax 成功后，静态更新表格中的数据
             $.ajax({
               type:'post'
@@ -111,12 +111,12 @@ layui.define(['table', 'form'], function(exports){
             });
 
 
-          });  
-          
+          });
+
           submit.trigger('click');
         }
         ,success: function(layero, index){
-          
+
         }
       });
     }
